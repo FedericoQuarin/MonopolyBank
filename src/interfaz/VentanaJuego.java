@@ -11,6 +11,10 @@ import javax.swing.BoxLayout;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import clases.Juego;
+import gestores.GestorJuego;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -37,6 +41,10 @@ public class VentanaJuego extends JFrame {
 	private JTextField textFieldJugador6;
 	private JTextField textFieldDinero6;
 	private JTextField montoTextField;
+	
+	
+	private GestorJuego gestorJuego;
+	private Juego juego;
 
 	/**
 	 * Launch the application.
@@ -53,11 +61,24 @@ public class VentanaJuego extends JFrame {
 			}
 		});
 	}
+	
+	public static void ejecutarVentana(Integer nroJugadores, Boolean conPozo) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					VentanaJuego frame = new VentanaJuego(nroJugadores, conPozo);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaJuego() {
+	private VentanaJuego(Integer nroJugadores, Boolean conPozo) {
 		setForeground(SystemColor.windowBorder);
 		setTitle("Monopoly Bank");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -222,6 +243,7 @@ public class VentanaJuego extends JFrame {
 		textFieldDinero5.setBounds(67, 33, 60, 20);
 		jugadorPanel5.add(textFieldDinero5);
 		
+
 		JPanel jugadorPanel6 = new JPanel();
 		jugadorPanel6.setLayout(null);
 		jugadorPanel6.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -277,43 +299,52 @@ public class VentanaJuego extends JFrame {
 		transferirButton.setBounds(20, 87, 110, 21);
 		opComunesPanel.add(transferirButton);
 		
+		
 		JPanel pozoPanel = new JPanel();
 		pozoPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		pozoPanel.setBounds(486, 287, 150, 120);
 		contentPane.add(pozoPanel);
 		pozoPanel.setLayout(null);
-		
+			
 		JLabel pozoLabel = new JLabel("Pozo");
 		pozoLabel.setBounds(10, 10, 45, 13);
 		pozoPanel.add(pozoLabel);
-		
+			
 		JLabel montoLabel = new JLabel("Monto");
 		montoLabel.setBounds(20, 32, 45, 13);
 		pozoPanel.add(montoLabel);
-		
+			
 		montoTextField = new JTextField();
 		montoTextField.setText("$0");
 		montoTextField.setEditable(false);
 		montoTextField.setColumns(10);
 		montoTextField.setBounds(70, 29, 60, 20);
 		pozoPanel.add(montoTextField);
-		
+			
 		JButton depositarPozoButton = new JButton("Depositar");
 		depositarPozoButton.setBounds(20, 57, 110, 21);
 		pozoPanel.add(depositarPozoButton);
-		
+			
 		JButton retirarPozoButton = new JButton("Retirar");
 		retirarPozoButton.setBounds(20, 86, 110, 21);
 		pozoPanel.add(retirarPozoButton);
+			
+		// si se selecciona para jugar con pozo se muestra las opciones correspondiente - AUN NO IMPLEMENTADO
+		if (!conPozo) {
+			pozoPanel.setVisible(false);
+		}
+		
 		
 		JButton salirButton = new JButton("Salir");
 		salirButton.setBounds(661, 532, 100, 21);
 		contentPane.add(salirButton);
 		setLocationRelativeTo(null);
-	}
-
-	public VentanaJuego(int cantidadJugadores, boolean conPozo) {
 		
-	}
+
+		gestorJuego = new GestorJuego();
+		juego = gestorJuego.nuevoJuego(nroJugadores);
+		
+		
+	}	
 }
 

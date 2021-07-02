@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import clases.Juego;
+import gestores.GestorJuego;
+
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -24,6 +28,7 @@ public class VentanaInicio extends JFrame {
 	private JPanel contentPane;
 	private SalirDialog ventanaSalir;
 	private JFrame ventanaJuego;
+	private GestorJuego gestorJuego;
 
 	/**
 	 * Launch the application.
@@ -45,6 +50,7 @@ public class VentanaInicio extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaInicio() {
+		setTitle("Monopoly Bank");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
@@ -80,6 +86,12 @@ public class VentanaInicio extends JFrame {
 		panel.add(pozoCheckBox);
 		
 		JButton jugarButton = new JButton("Jugar");
+		jugarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaJuego.ejecutarVentana((int) jugadoresSpinner.getValue(), true);
+				dispose();				
+			}
+		});
 		jugarButton.setBounds(45, 96, 100, 21);
 		panel.add(jugarButton);
 		
@@ -96,6 +108,10 @@ public class VentanaInicio extends JFrame {
 		// Ventana salir
 		ventanaSalir = new SalirDialog(this);
 		ventanaSalir.setLocationRelativeTo(null);
+		
+		// GestorJuego
+		gestorJuego = new GestorJuego();
+		
 
 		setLocationRelativeTo(null);
 	}
